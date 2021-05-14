@@ -1,17 +1,30 @@
-version: "3"
+version: "3.4"
 services:
-#  java:
-#    build:
-#      context: .
-#      dockerfile: docker/dockerfile-java
-#    volumes:
-#       - ./:/code
-#    working_dir: /code
-#    command: tail -f /dev/null
-#    tty: true
+  api:
+    container_name: wcstore_api
+    build:
+      context: .
+      dockerfile: infrastructure/docker/java.dockerfile
+      target: dev
+    volumes:
+      - ./:/code
+      - ./.m2:/code/.m2
+    env_file: 
+      - .env
+    working_dir: /code
+    command: 
+      - |
+        mvn install
+        cd data-service
+        mvn spring-boot:run -B -Dspring-boot.run.profiles=dev
+    depends_on: 
+      - postgres
+    ports: 
+      - "${API_SERVER_PORT}:${API_SERVER_PORT}"
+    tty: true
   postgres:
-    container_name: wcs_postgres
-    image: postgres:9.5
+    container_name: wcstore_postgres
+    image: postgres:13
     ports:
       - "5555:5432"
     environment:

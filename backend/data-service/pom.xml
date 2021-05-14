@@ -11,7 +11,7 @@
 	</parent>
 
 	<artifactId>dataservice</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
 	</properties>
