@@ -19,9 +19,11 @@ services:
         mvn spring-boot:run -B -Dspring-boot.run.profiles=dev
     depends_on: 
       - postgres
+      - mailhog
     ports: 
       - "${API_SERVER_PORT}:${API_SERVER_PORT}"
     tty: true
+
   postgres:
     container_name: wcstore_postgres
     image: postgres:13
@@ -34,11 +36,13 @@ services:
     volumes:
       - wcs_pgdata:/var/lib/postgresql/data
 
+  # Testing mail forms
   mailhog:
+    container_name: wcstore_mail
     image: mailhog/mailhog
     ports:
-      - 1025:1025
-      - 8025:8025
+      - "1025:1025" #SMTP port
+      - "8025:8025" #Web frontend
 
 volumes:
   wcs_pgdata:
