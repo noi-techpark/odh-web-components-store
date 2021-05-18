@@ -32,7 +32,7 @@ RUN mvn -B -DskipTests package
 
 ## Running stage
 #
-FROM openjdk:8-jre-alpine as run_api
+FROM openjdk:8-jre-alpine as buildapi
 
 # Copy the built artifact from build image
 COPY --from=build /code/data-service/target/dataservice.jar /app.jar
