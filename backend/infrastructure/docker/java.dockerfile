@@ -30,6 +30,11 @@ RUN ./java-entrypoint.sh
 RUN mvn -B install
 RUN mvn -B -DskipTests package
 
+## Testing stage on Jenkins
+FROM build as test
+ENTRYPOINT [ "/entrypoint.sh" ]
+
+
 ## Running stage
 #
 FROM openjdk:8-jre-alpine as buildapi
