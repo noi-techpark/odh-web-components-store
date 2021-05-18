@@ -21,7 +21,7 @@ services:
       - postgres
       - mailhog
     ports: 
-      - "${API_SERVER_PORT}:${API_SERVER_PORT}"
+      - "${SERVER_PORT}:${SERVER_PORT}"
     tty: true
 
   postgres:
