@@ -3,7 +3,7 @@ services:
   api:
     container_name: wcstore_api
     build:
-      context: .
+      context: ../..
       dockerfile: infrastructure/docker/java.dockerfile
       target: test
     env_file: 

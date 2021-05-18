@@ -34,7 +34,7 @@ pipeline {
         stage('Configure') {
             steps {
                 sh '''
-					cd backend
+					cd backend/infrastructure/docker/api
                     rm -f .env
                     echo 'COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}' >> .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
