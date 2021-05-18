@@ -34,6 +34,7 @@ pipeline {
         stage('Configure') {
             steps {
                 sh '''
+					cd backend
                     rm -f .env
                     echo 'COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}' >> .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
@@ -59,6 +60,7 @@ pipeline {
 		stage('Test') {
             steps {
                 sh '''
+					cd backend
                     docker network create authentication || true
                     docker-compose --no-ansi build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
                     docker-compose --no-ansi run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) api mvn -B clean test
@@ -79,7 +81,7 @@ pipeline {
             steps {
                sshagent(['jenkins-ssh-key']) {
                     sh """
-                        cd infrastructure/ansible
+                        cd backend/infrastructure/ansible
                         ansible-galaxy install -f -r requirements.yml
                         ansible-playbook --limit=${ANSIBLE_LIMIT} deploy.yml --extra-vars "release_name=${BUILD_NUMBER}"
                     """
