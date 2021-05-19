@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   app:
-    image: ${DOCKER_IMAGE}-cdn:${DOCKER_TAG}
+    image: ${DOCKER_IMAGE}:${DOCKER_TAG}-cdn
     env_file:
       - .env    
     build:
