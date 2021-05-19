@@ -22,9 +22,9 @@ COPY ./pom.xml ./pom.xml
 # RUN mvn dependency:go-offline -B
 
 COPY common common/
-#COPY crawler-service crawler-service/
+COPY crawler-service crawler-service/
 COPY data-service data-service/
-#COPY delivery-service delivery-service/
+COPY delivery-service delivery-service/
 COPY infrastructure/docker/java-entrypoint.sh /entrypoint.sh
 #RUN ./java-entrypoint.sh 
 #RUN mvn -B install --projects common
