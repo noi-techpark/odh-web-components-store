@@ -33,7 +33,7 @@ pipeline {
     stages {
         stage('Configure') {
             steps {
-                sh '''
+                sh """
 					cd backend/infrastructure/docker/api
                     rm -f .env
                     echo 'COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}' >> .env
@@ -54,7 +54,7 @@ pipeline {
 					echo 'KEYCLOAK_REALM=${KEYCLOAK_REALM}' >> .env
 					echo 'KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}' >> .env
 					echo 'KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}' >> .env
-				'''
+				"""
 			}
 		}
 		stage('Test') {
