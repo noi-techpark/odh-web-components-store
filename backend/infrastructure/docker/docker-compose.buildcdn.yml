@@ -4,7 +4,7 @@ services:
   app:
     image: ${DOCKER_IMAGE}-cdn:${DOCKER_TAG}
     env_file:
-      - ../.env    
+      - .env    
     build:
       context: ../..
       dockerfile: infrastructure/docker/java.dockerfile
