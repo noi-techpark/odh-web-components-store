@@ -71,6 +71,7 @@ pipeline {
             steps {
 //                    docker-compose --no-ansi -f infrastructure/docker/docker-compose.build.yml build --pull
                 sh '''
+					cd backend
                     aws ecr get-login --region eu-west-1 --no-include-email | bash
 					docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.build.yml build --pull
                     docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.build.yml push
