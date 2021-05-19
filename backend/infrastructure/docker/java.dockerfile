@@ -28,6 +28,7 @@ COPY delivery-service delivery-service/
 COPY infrastructure/docker/java-entrypoint.sh /entrypoint.sh
 #RUN ./java-entrypoint.sh 
 #RUN mvn -B install --projects common
+COPY data-service/src/main/resources/application-deployment.properties data-service/src/main/resources/application.properties
 RUN mvn -B package --projects data-service --also-make
 
 ## Testing stage on Jenkins
