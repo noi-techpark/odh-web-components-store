@@ -3,6 +3,7 @@ FROM maven:3-jdk-8-alpine as base
 ## Local development stage
 #
 FROM base as dev
+WORKDIR /code
 COPY infrastructure/docker/java-entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 
@@ -20,9 +21,6 @@ RUN addgroup -g $JENKINS_GROUP_ID jenkins && \
 WORKDIR /code
 COPY ./pom.xml ./pom.xml
 
-# fetch all dependencies
-# RUN mvn dependency:go-offline -B
-
 COPY common common/
 COPY crawler-service crawler-service/
 COPY data-service data-service/
@@ -32,11 +30,11 @@ COPY data-service/src/main/resources/application-deployment.properties \
 	 data-service/src/main/resources/application.properties
 COPY delivery-service/src/main/resources/application-deployment.properties \
 	 delivery-service/src/main/resources/application.properties	 
-RUN /entrypoint.sh true
-RUN mvn -B package --also-make
 
-## Testing stage on Jenkins
-FROM build as test
+# fetch all dependencies (run the entrypoint.sh to force a .m2 location)
+RUN /entrypoint.sh true && mvn dependency:go-offline -B
+
+RUN mvn -B package --also-make
 ENTRYPOINT [ "/entrypoint.sh" ]
 
 

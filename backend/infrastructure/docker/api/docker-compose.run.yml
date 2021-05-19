@@ -7,14 +7,14 @@ services:
     env_file: 
       - .env
     environment:
-        SERVER_PORT: ${SERVER_PORT}
+      API_SERVER_PORT: ${API_SERVER_PORT}
     volumes: 
       - ../shared/workspace:/workspace
     # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:${SERVER_PORT}/actuator/health"]
+    #   test: ["CMD", "curl", "-f", "http://localhost:${API_SERVER_PORT}/actuator/health"]
     #   interval: 20s
     #   timeout: 10s
     #   retries: 5
     #   start_period: 30s
     ports:
-      - "${SERVER_PORT}:${SERVER_PORT}"
+      - "${API_SERVER_PORT}:${API_SERVER_PORT}"

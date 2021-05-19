@@ -5,7 +5,7 @@ pipeline {
 		COMPOSE_PROJECT_NAME = "wcstore-api"
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/wcstore-api'
         DOCKER_TAG = "test-$BUILD_NUMBER"
-        SERVER_PORT = "1200"
+        API_SERVER_PORT = "1200"
 		ANSIBLE_LIMIT = "test"
 
 		LIGHTHOUSE_API_KEY = credentials('webcompstore-lighthouse-api-key-test')
@@ -40,7 +40,7 @@ pipeline {
                     echo 'COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}' >> .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
-                    echo 'SERVER_PORT=${SERVER_PORT}' >> .env
+                    echo 'API_SERVER_PORT=${API_SERVER_PORT}' >> .env
 
 					echo 'LIGHTHOUSE_API_KEY=${LIGHTHOUSE_API_KEY}' >> .env
 					echo 'DEBUG_LEVEL=${DEBUG_LEVEL}' >> .env
@@ -64,17 +64,23 @@ pipeline {
                 sh '''
 					cd backend
                     docker network create authentication || true
-                    docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.test.yml build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
+
+					docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.test.yml build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
+                    docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.test.yml run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) api "mvn -B --projects data-service --also-make install test"
+
+					docker-compose --no-ansi -f infrastructure/docker/cdn/docker-compose.test.yml build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
+                    docker-compose --no-ansi -f infrastructure/docker/cdn/docker-compose.test.yml run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) api "mvn -B --projects delivery-service --also-make install test"
                 '''
-//                    docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.test.yml run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) api mvn -B clean test
             }
         }
         stage('Build') {
             steps {
-//                    docker-compose --no-ansi -f infrastructure/docker/docker-compose.build.yml build --pull
                 sh '''
 					cd backend
                     aws ecr get-login --region eu-west-1 --no-include-email | bash
+
+                    docker-compose --no-ansi -f infrastructure/docker/docker-compose.build.yml build --pull
+
 					docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.build.yml build --pull
                     docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.build.yml push
                 '''

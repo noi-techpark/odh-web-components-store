@@ -5,7 +5,6 @@ services:
     build:
       context: ../../..
       dockerfile: infrastructure/docker/java.dockerfile
-      target: test
-    command: mvn -B test
+      target: build
     env_file: 
       - .env
