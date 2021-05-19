@@ -19,16 +19,16 @@ WORKDIR /code
 COPY ./pom.xml ./pom.xml
 
 # fetch all dependencies
-RUN mvn dependency:go-offline -B
+# RUN mvn dependency:go-offline -B
 
 COPY common common/
-COPY crawler-service crawler-service/
+#COPY crawler-service crawler-service/
 COPY data-service data-service/
-COPY delivery-service delivery-service/
-COPY infrastructure/docker/java-entrypoint.sh .
-RUN ./java-entrypoint.sh 
-RUN mvn -B install
-RUN mvn -B -DskipTests package
+#COPY delivery-service delivery-service/
+COPY infrastructure/docker/java-entrypoint.sh /entrypoint.sh
+#RUN ./java-entrypoint.sh 
+#RUN mvn -B install --projects common
+RUN mvn -B package --projects data-service --also-make
 
 ## Testing stage on Jenkins
 FROM build as test
