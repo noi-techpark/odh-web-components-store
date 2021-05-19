@@ -18,7 +18,8 @@ ARG JENKINS_USER_ID=1000
 RUN addgroup -g $JENKINS_GROUP_ID jenkins && \
     adduser -D -u $JENKINS_USER_ID -G jenkins jenkins
 
-USER jenkins
+COPY infrastructure/docker/java-entrypoint.sh /entrypoint.sh
+RUN /entrypoint.sh true
 
 WORKDIR /code
 COPY ./pom.xml ./pom.xml
@@ -27,16 +28,19 @@ COPY common common/
 COPY crawler-service crawler-service/
 COPY data-service data-service/
 COPY delivery-service delivery-service/
-COPY infrastructure/docker/java-entrypoint.sh /entrypoint.sh
 COPY data-service/src/main/resources/application-deployment.properties \
 	 data-service/src/main/resources/application.properties
 COPY delivery-service/src/main/resources/application-deployment.properties \
 	 delivery-service/src/main/resources/application.properties	 
+RUN chown -R jenkins:jenkins /code
 
 # fetch all dependencies (run the entrypoint.sh to force a .m2 location)
-RUN /entrypoint.sh true && mvn dependency:go-offline -B
+#RUN /entrypoint.sh true
+# && mvn dependency:go-offline -B
 
-RUN mvn -B package --also-make
+USER ${JENKINS_USER_ID}:${JENKINS_GROUP_ID}
+RUN mvn -B -Duser.home=/var/maven install
+RUN mvn -B -Duser.home=/var/maven package --also-make
 ENTRYPOINT [ "/entrypoint.sh" ]
 
 
@@ -48,7 +52,7 @@ FROM openjdk:8-jre-alpine as buildapi
 COPY --from=build /code/data-service/target/dataservice.jar /app.jar
 
 # OPTIONAL: copy dependencies so the thin jar won't need to re-download them
-#COPY --from=build /code/.m2 /code/.m2
+#COPY --from=build /var/maven/.m2 /code/.m2
 
 # set the startup command to run the API
 CMD ["java","-jar","/app.jar"]

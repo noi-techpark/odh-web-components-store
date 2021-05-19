@@ -6,6 +6,7 @@ pipeline {
         DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/wcstore-api'
         DOCKER_TAG = "test-$BUILD_NUMBER"
         API_SERVER_PORT = "1200"
+		CDN_SERVER_PORT = "1201"
 		ANSIBLE_LIMIT = "test"
 
 		LIGHTHOUSE_API_KEY = credentials('webcompstore-lighthouse-api-key-test')
@@ -35,12 +36,13 @@ pipeline {
         stage('Configure') {
             steps {
                 sh """
-					cd backend/infrastructure/docker/api
+					cd backend/infrastructure/docker
                     rm -f .env
                     echo 'COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}' >> .env
                     echo 'DOCKER_IMAGE=${DOCKER_IMAGE}' >> .env
                     echo 'DOCKER_TAG=${DOCKER_TAG}' >> .env
                     echo 'API_SERVER_PORT=${API_SERVER_PORT}' >> .env
+					echo 'CDN_SERVER_PORT=${CDN_SERVER_PORT}' >> .env
 
 					echo 'LIGHTHOUSE_API_KEY=${LIGHTHOUSE_API_KEY}' >> .env
 					echo 'DEBUG_LEVEL=${DEBUG_LEVEL}' >> .env
@@ -65,11 +67,8 @@ pipeline {
 					cd backend
                     docker network create authentication || true
 
-					docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.test.yml build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
-                    docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.test.yml run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) api "mvn -B --projects data-service --also-make install test"
-
-					docker-compose --no-ansi -f infrastructure/docker/cdn/docker-compose.test.yml build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
-                    docker-compose --no-ansi -f infrastructure/docker/cdn/docker-compose.test.yml run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) api "mvn -B --projects delivery-service --also-make install test"
+					docker-compose --no-ansi -f infrastructure/docker/docker-compose.test.yml build --pull --build-arg JENKINS_USER_ID=$(id -u jenkins) --build-arg JENKINS_GROUP_ID=$(id -g jenkins)
+                    docker-compose --no-ansi -f infrastructure/docker/docker-compose.test.yml run --rm --no-deps -u $(id -u jenkins):$(id -g jenkins) api "mvn -B install test"
                 '''
             }
         }
@@ -81,8 +80,11 @@ pipeline {
 
                     docker-compose --no-ansi -f infrastructure/docker/docker-compose.build.yml build --pull
 
-					docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.build.yml build --pull
-                    docker-compose --no-ansi -f infrastructure/docker/api/docker-compose.build.yml push
+					docker-compose --no-ansi -f infrastructure/docker/docker-compose.buildapi.yml build --pull
+					docker-compose --no-ansi -f infrastructure/docker/docker-compose.buildcdn.yml build --pull
+
+                    docker-compose --no-ansi -f infrastructure/docker/docker-compose.buildapi.yml push
+                    docker-compose --no-ansi -f infrastructure/docker/docker-compose.buildcdn.yml push
                 '''
             }
         }

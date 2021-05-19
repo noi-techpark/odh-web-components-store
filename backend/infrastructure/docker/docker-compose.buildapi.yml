@@ -2,8 +2,10 @@ version: "3.4"
 
 services:
   app:
-    image: ${DOCKER_IMAGE}:${DOCKER_TAG}
+    image: ${DOCKER_IMAGE}-api:${DOCKER_TAG}
+    env_file:
+      - ../.env
     build:
       context: ../../..
       dockerfile: infrastructure/docker/java.dockerfile
-      target: buildcdn
+      target: buildapi

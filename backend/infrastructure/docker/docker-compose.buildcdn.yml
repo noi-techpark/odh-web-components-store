@@ -1,10 +1,11 @@
 version: "3.4"
+
 services:
-  api:
-    container_name: wcstore_api
+  app:
+    image: ${DOCKER_IMAGE}-cdn:${DOCKER_TAG}
+    env_file:
+      - ../.env    
     build:
       context: ../../..
       dockerfile: infrastructure/docker/java.dockerfile
-      target: build
-    env_file: 
-      - .env
+      target: buildcdn

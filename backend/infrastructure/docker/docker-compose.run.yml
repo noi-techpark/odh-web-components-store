@@ -1,0 +1,39 @@
+version: "3.4"
+
+services:
+  cdn:
+    image: ${DOCKER_IMAGE}-cdn:${DOCKER_TAG}
+    restart: unless-stopped
+    env_file: 
+      - .env
+    environment:
+      CDN_SERVER_PORT: ${CDN_SERVER_PORT}
+    volumes: 
+      - ../shared/workspace:/workspace
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:${CDN_SERVER_PORT}/actuator/health"]
+    #   interval: 20s
+    #   timeout: 10s
+    #   retries: 5
+    #   start_period: 30s
+    ports:
+      - "${CDN_SERVER_PORT}:${CDN_SERVER_PORT}"
+
+  api:
+    image: ${DOCKER_IMAGE}-api:${DOCKER_TAG}
+    restart: unless-stopped
+    env_file: 
+      - .env
+    environment:
+      API_SERVER_PORT: ${API_SERVER_PORT}
+    volumes: 
+      - ../shared/workspace:/workspace
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:${API_SERVER_PORT}/actuator/health"]
+    #   interval: 20s
+    #   timeout: 10s
+    #   retries: 5
+    #   start_period: 30s
+    ports:
+      - "${API_SERVER_PORT}:${API_SERVER_PORT}"
+      

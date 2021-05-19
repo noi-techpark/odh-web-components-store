@@ -11,12 +11,15 @@ services:
       - ./.m2:/code/.m2
     env_file: 
       - .env
+    environment: 
+      MAVEN_CONFIG: /code/.m2
     working_dir: /code
+    user: "1000"    # id of your local development user
     command: 
       - |
-        mvn install
+        mvn install -Duser.home=/code
         cd data-service
-        mvn spring-boot:run -B -Dspring-boot.run.profiles=dev
+        mvn spring-boot:run -B -Dspring-boot.run.profiles=dev -Duser.home=/code
     depends_on: 
       - postgres
       - mailhog
