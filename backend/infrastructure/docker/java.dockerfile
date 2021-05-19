@@ -1,5 +1,7 @@
 FROM maven:3-jdk-8-alpine as base
 
+## Local development stage
+#
 FROM base as dev
 COPY infrastructure/docker/java-entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
@@ -26,22 +28,37 @@ COPY crawler-service crawler-service/
 COPY data-service data-service/
 COPY delivery-service delivery-service/
 COPY infrastructure/docker/java-entrypoint.sh /entrypoint.sh
-#RUN ./java-entrypoint.sh 
-#RUN mvn -B install --projects common
-COPY data-service/src/main/resources/application-deployment.properties data-service/src/main/resources/application.properties
-RUN mvn -B package --projects data-service --also-make
+COPY data-service/src/main/resources/application-deployment.properties \
+	 data-service/src/main/resources/application.properties
+COPY delivery-service/src/main/resources/application-deployment.properties \
+	 delivery-service/src/main/resources/application.properties	 
+RUN /java-entrypoint.sh "mvn -B package --also-make"
 
 ## Testing stage on Jenkins
 FROM build as test
 ENTRYPOINT [ "/entrypoint.sh" ]
 
 
-## Running stage
+## Running stage: API
 #
 FROM openjdk:8-jre-alpine as buildapi
 
 # Copy the built artifact from build image
 COPY --from=build /code/data-service/target/dataservice.jar /app.jar
+
+# OPTIONAL: copy dependencies so the thin jar won't need to re-download them
+#COPY --from=build /code/.m2 /code/.m2
+
+# set the startup command to run the API
+CMD ["java","-jar","/app.jar"]
+
+
+## Running stage: CDN
+#
+FROM openjdk:8-jre-alpine as buildcdn
+
+# Copy the built artifact from build image
+COPY --from=build /code/delivery-service/target/deliveryservice.jar /app.jar
 
 # OPTIONAL: copy dependencies so the thin jar won't need to re-download them
 #COPY --from=build /code/.m2 /code/.m2
