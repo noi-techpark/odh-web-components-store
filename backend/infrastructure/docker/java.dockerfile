@@ -32,7 +32,8 @@ COPY data-service/src/main/resources/application-deployment.properties \
 	 data-service/src/main/resources/application.properties
 COPY delivery-service/src/main/resources/application-deployment.properties \
 	 delivery-service/src/main/resources/application.properties	 
-RUN /java-entrypoint.sh "mvn -B package --also-make"
+RUN /entrypoint.sh true
+RUN mvn -B package --also-make
 
 ## Testing stage on Jenkins
 FROM build as test
