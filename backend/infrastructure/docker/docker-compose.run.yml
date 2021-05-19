@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   cdn:
-    image: ${DOCKER_IMAGE}-cdn:${DOCKER_TAG}
+    image: ${DOCKER_IMAGE}:${DOCKER_TAG}-cdn
     restart: unless-stopped
     env_file: 
       - .env
@@ -20,7 +20,7 @@ services:
       - "${CDN_SERVER_PORT}:${CDN_SERVER_PORT}"
 
   api:
-    image: ${DOCKER_IMAGE}-api:${DOCKER_TAG}
+    image: ${DOCKER_IMAGE}:${DOCKER_TAG}-api
     restart: unless-stopped
     env_file: 
       - .env
