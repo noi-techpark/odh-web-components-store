@@ -10,6 +10,7 @@ pipeline {
 
 		LIGHTHOUSE_API_KEY = credentials('webcompstore-lighthouse-api-key-test')
         DEBUG_LEVEL = "DEBUG"
+		WORKSPACE_PATH = "/workspace"
 
 		DB_URL = "jdbc:postgresql://test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/webcompstore"
 		DB_USR = credentials('webcompstore-test-postgres-username')
@@ -43,6 +44,7 @@ pipeline {
 
 					echo 'LIGHTHOUSE_API_KEY=${LIGHTHOUSE_API_KEY}' >> .env
 					echo 'DEBUG_LEVEL=${DEBUG_LEVEL}' >> .env
+					echo 'WORKSPACE_PATH=${WORKSPACE_PATH}' >> .env
 					echo 'DB_URL=${DB_URL}' >> .env
 					echo 'DB_USR=${DB_USR}' >> .env
 					echo 'DB_PWD=${DB_PWD}' >> .env

@@ -8,6 +8,8 @@ services:
       - .env
     environment:
         SERVER_PORT: ${SERVER_PORT}
+    volumes: 
+      - ../shared/workspace:/workspace
     # healthcheck:
     #   test: ["CMD", "curl", "-f", "http://localhost:${SERVER_PORT}/actuator/health"]
     #   interval: 20s
