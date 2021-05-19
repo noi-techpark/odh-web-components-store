@@ -4,6 +4,14 @@ services:
   app:
     image: ${DOCKER_IMAGE}:${DOCKER_TAG}
     build:
-      context: .
+      context: ../..
       dockerfile: infrastructure/docker/java.dockerfile
       target: build
+    env_file: 
+      - .env
+    volumes:
+      - ../../.m2:/var/maven/.m2
+    environment: 
+      MAVEN_CONFIG: /var/maven/.m2
+    working_dir: /code
+  

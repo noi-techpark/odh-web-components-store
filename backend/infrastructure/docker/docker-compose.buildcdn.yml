@@ -6,6 +6,6 @@ services:
     env_file:
       - ../.env    
     build:
-      context: ../../..
+      context: ../..
       dockerfile: infrastructure/docker/java.dockerfile
       target: buildcdn
