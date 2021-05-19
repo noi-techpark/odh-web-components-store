@@ -34,6 +34,8 @@ pipeline {
         stage('Configure') {
             steps {
                 sh """
+					cp backend/data-service/src/main/resources/application-deployment.properties backend/data-service/src/main/resources/application.properties
+					
 					cd backend/infrastructure/docker/api
                     rm -f .env
                     echo 'COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME}' >> .env
