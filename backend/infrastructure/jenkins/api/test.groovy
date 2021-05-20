@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-		COMPOSE_PROJECT_NAME = "wcstore-api"
-        DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/wcstore-api'
+		COMPOSE_PROJECT_NAME = "webcompstore"
+        DOCKER_IMAGE = '755952719952.dkr.ecr.eu-west-1.amazonaws.com/webcompstore'
         DOCKER_TAG = "test-$BUILD_NUMBER"
         API_SERVER_PORT = "1200"
 		CDN_SERVER_PORT = "1201"
