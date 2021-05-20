@@ -27,6 +27,32 @@ services:
       - "${API_SERVER_PORT}:${API_SERVER_PORT}"
     tty: true
 
+  cdn:
+    container_name: wcstore_cdn
+    build:
+      context: .
+      dockerfile: infrastructure/docker/java.dockerfile
+      target: dev
+    volumes:
+      - ./:/code
+      - ./.m2:/code/.m2
+    env_file: 
+      - .env
+    environment: 
+      MAVEN_CONFIG: /code/.m2
+    working_dir: /code
+    user: "1000"    # id of your local development user
+    command: 
+      - |
+        mvn install -Duser.home=/code
+        cd delivery-service
+        mvn spring-boot:run -B -Dspring-boot.run.profiles=dev -Duser.home=/code
+    depends_on: 
+      - postgres
+    ports: 
+      - "${CDN_SERVER_PORT}:${CDN_SERVER_PORT}"
+    tty: true
+  
   postgres:
     container_name: wcstore_postgres
     image: postgres:13

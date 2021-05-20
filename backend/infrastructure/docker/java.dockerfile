@@ -39,8 +39,8 @@ RUN chown -R jenkins:jenkins /code
 # && mvn dependency:go-offline -B
 
 USER ${JENKINS_USER_ID}:${JENKINS_GROUP_ID}
-RUN mvn -B -Duser.home=/var/maven install
-RUN mvn -B -Duser.home=/var/maven package --also-make
+RUN mvn -B -Duser.home=/code install
+RUN mvn -B -Duser.home=/code package --also-make
 ENTRYPOINT [ "/entrypoint.sh" ]
 
 
@@ -52,7 +52,7 @@ FROM openjdk:8-jre-alpine as buildapi
 COPY --from=build /code/data-service/target/dataservice.jar /app.jar
 
 # OPTIONAL: copy dependencies so the thin jar won't need to re-download them
-#COPY --from=build /var/maven/.m2 /code/.m2
+#COPY --from=build /code/.m2 /code/.m2
 
 # set the startup command to run the API
 CMD ["java","-jar","/app.jar"]

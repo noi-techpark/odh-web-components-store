@@ -1,15 +1,15 @@
 #!/bin/bash
 
-mkdir -p /var/maven/.m2/repository
-cat > /var/maven/.m2/settings.xml << EOF
+# $PWD gives the current working dir
+export MAVEN_CONFIG="$PWD"
+
+mkdir -p "$MAVEN_CONFIG/.m2/repository"
+cat > "$MAVEN_CONFIG/.m2/settings.xml" << EOF
 <settings>
-    <localRepository>/var/maven/.m2</localRepository>
+    <localRepository>$MAVEN_CONFIG/.m2</localRepository>
 </settings>
 EOF
 
-export MAVEN_CONFIG="$HOME"
+# chown -R "$USER:$GROUP" "$MAVEN_CONFIG"
 
-chown -R jenkins:jenkins /var/maven
-
-#/bin/bash -c "/usr/local/bin/mvn-entrypoint.sh $@"
 /bin/bash -c "$@" 
