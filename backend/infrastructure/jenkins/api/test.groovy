@@ -10,7 +10,7 @@ pipeline {
 		ANSIBLE_LIMIT = "test"
 
 		LIGHTHOUSE_API_KEY = credentials('webcompstore-lighthouse-api-key-test')
-        DEBUG_LEVEL = "DEBUG"
+        DEBUG_LEVEL = "INFO"
 		WORKSPACE_PATH = "/workspace"
 
 		DB_URL = "jdbc:postgresql://test-pg-bdp.co90ybcr8iim.eu-west-1.rds.amazonaws.com:5432/webcompstore"
