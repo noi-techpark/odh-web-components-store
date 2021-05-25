@@ -10,7 +10,4 @@ services:
       - .env
     volumes:
       - ../../.m2:/code/.m2
-#    environment: 
-#      MAVEN_CONFIG: /code/.m2
-#    working_dir: /code
         

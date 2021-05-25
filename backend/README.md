@@ -1,6 +1,6 @@
 # ODH: Webcomponents
 
-Webcomponents store for OpenDataHub.
+Web component store for OpenDataHub.
 
 - [ODH: Webcomponents](#odh-webcomponents)
 	- [Getting started](#getting-started)
@@ -11,13 +11,10 @@ Webcomponents store for OpenDataHub.
 		- [Build](#build)
 		- [Running tests](#running-tests)
 	- [Configuration](#configuration)
-		- [crawler-service](#crawler-service)
-		- [delivery-service](#delivery-service)
-		- [data-service](#data-service)
 	- [Deployment](#deployment)
 	- [API & swagger](#api--swagger)
-		- [data-service](#data-service-1)
-		- [delivery-service](#delivery-service-1)
+		- [data-service](#data-service)
+		- [delivery-service](#delivery-service)
 	- [General Usage](#general-usage)
 		- [Adding a webcomponent](#adding-a-webcomponent)
 		- [wcs-manifest.json](#wcs-manifestjson)
@@ -61,7 +58,7 @@ git clone https://github.com/noi-techpark/it.bz.opendatahub.webcomponents
 Change directory:
 
 ```bash
-cd odh-web-components-store/backend/
+cd it.bz.opendatahub.webcomponents/backend/
 ```
 
 ### Project Structure
@@ -71,6 +68,8 @@ The backend system is divided in four modules.
 The 'common' module holds code that is shared between all parts of the application.
 
 'crawler-service', 'data-service' and 'delivery-service' are distinct spring boot applications.
+
+NB: The crawler is deprecated, and not developed further for now.
 
 ## Building and Testing
 
@@ -96,72 +95,18 @@ Each service application comes with one or more profiles that can be configured.
 
 > src/main/resources/application[-profile].properties
 
-It is recommended to make a copy of ***application-dev.properties*** and name it ***application-local.properties*** as this file
-is already ignored by git. Run the application with profile name "**local**".
+It is recommended to make a copy of ***application-dev.properties*** and name it
+***application-local.properties*** as this file is already ignored by git. Run
+the application with profile name "**local**".
 
-**NOTE:** never change the deployment profile configuration unless you know what you are doing!
+**NOTE:** never change the deployment profile configuration unless you know what
+you are doing!
 
 You will have to configure the 'datasource' property for each application.
 
-There are some specific settings in the 'application' section of the configuration that might need customization:
-
-### crawler-service
-
-```
-application.repository.github.token
-```
-enter your github token to bypass the 60 calls/hour limit
-
-```
-application.repository.origin.url
-application.repository.origin.branch
-```
-repository where the master list for webcomponents can be found. must use https and not ssh
-
-```
-application.workspace.path
-```
-path to the local file system where the crawler will store the "dist" files.
-
-### delivery-service
-
-```
-application.workspace.path
-```
-path to the local file system where the crawler has stored the "dist" files
-
-### data-service
-
-```
-application.workspace.path
-```
-path to the local file system where the crawler has stored the "dist" files
-
-```
-application.deliveryBaseUrl
-```
-url where the frontend can reach the delivery service to load dist files
-
-```
-application.previewBaseUrl
-```
-url where api exposed the preview page eg: http://api.wcs/preview
-
-```
-application.google.lighthouse.api-key
-```
-api key for google lighthouse to fetch performance metrics. This can be obtained
-here: https://developers.google.com/speed/docs/insights/v5/get-started
-
-```
-application.mailer.*
-```
-all these settings are required for the mailer to work
-
-```
-keycloak.*
-```
-all these settings are required for authentication to work
+There are some specific settings in the 'application' section of the
+configuration that might need customization: Please refer to each file and its
+commands for further information. 
 
 ## Deployment
 
@@ -392,7 +337,8 @@ on your machine.
 
 ### Start and stop the containers
 
-Before start working you have to start the Docker containers:
+Before start working you have to configure your environment. Copy/paste
+.env.example into .env file, and start the Docker containers:
 
 ```
 docker-compose up --build --detach

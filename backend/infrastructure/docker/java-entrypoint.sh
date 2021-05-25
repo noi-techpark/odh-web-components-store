@@ -10,6 +10,4 @@ cat > "$MAVEN_CONFIG/.m2/settings.xml" << EOF
 </settings>
 EOF
 
-# chown -R "$USER:$GROUP" "$MAVEN_CONFIG"
-
 /bin/bash -c "$@" 

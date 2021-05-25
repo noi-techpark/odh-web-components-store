@@ -32,7 +32,7 @@ COPY data-service/src/main/resources/application-deployment.properties \
 	 data-service/src/main/resources/application.properties
 COPY delivery-service/src/main/resources/application-deployment.properties \
 	 delivery-service/src/main/resources/application.properties	 
-RUN chown -R jenkins:jenkins /code
+RUN chown -R ${JENKINS_USER_ID}:${JENKINS_GROUP_ID} /code
 
 # fetch all dependencies (run the entrypoint.sh to force a .m2 location)
 #RUN /entrypoint.sh true
