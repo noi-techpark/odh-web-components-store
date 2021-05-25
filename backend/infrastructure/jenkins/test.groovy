@@ -30,6 +30,16 @@ pipeline {
 		KEYCLOAK_REALM = "noi"
 		KEYCLOAK_CLIENT_ID = "odh-wcs"
 		KEYCLOAK_CLIENT_SECRET = credentials('webcompstore-keycloak-client-secret-test')
+
+		// SMTP configuration
+		SMTP_PWD = credentials('webcompstore-test-smtp-password')
+		SMTP_USR = "no-reply@testingmachine.eu"
+		SMTP_TO = "help@opendatahub.bz.it"
+		SMTP_FROM = "no-reply@testingmachine.eu"
+		SMTP_SUBJECT = "Web Component Store: Contact form (TEST PLEASE IGNORE)"
+		SMTP_HOST = "smtp.eu.mailgun.org"
+		SMTP_PORT = "587"
+		SMTP_DEBUG = "true"
     }
 
     stages {
@@ -58,6 +68,14 @@ pipeline {
 					echo 'KEYCLOAK_REALM=${KEYCLOAK_REALM}' >> .env
 					echo 'KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}' >> .env
 					echo 'KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}' >> .env
+					echo 'SMTP_PWD=${SMTP_PWD}' >> .env
+					echo 'SMTP_USR=${SMTP_USR}' >> .env
+					echo 'SMTP_TO=${SMTP_TO}' >> .env
+					echo 'SMTP_FROM=${SMTP_FROM}' >> .env
+					echo 'SMTP_SUBJECT=${SMTP_SUBJECT}' >> .env
+					echo 'SMTP_HOST=${SMTP_HOST}' >> .env
+					echo 'SMTP_PORT=${SMTP_PORT}' >> .env
+					echo 'SMTP_DEBUG=${SMTP_DEBUG}' >> .env
 				"""
 			}
 		}

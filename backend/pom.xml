@@ -6,7 +6,7 @@
 	<groupId>it.bz.opendatahub.webcomponents</groupId>
 	<artifactId>webcomponents</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0</version>
+	<version>2.0</version>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -16,7 +16,7 @@
 
 	<modules>
 		<module>common</module>
-		<module>crawler-service</module>
+		<!--module>crawler-service</module-->
 		<module>data-service</module>
 		<module>delivery-service</module>
 	</modules>
