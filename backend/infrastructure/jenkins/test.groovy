@@ -54,12 +54,9 @@ pipeline {
                     echo 'API_SERVER_PORT=${API_SERVER_PORT}' >> .env
 					echo 'CDN_SERVER_PORT=${CDN_SERVER_PORT}' >> .env
 
-					echo 'LIGHTHOUSE_API_KEY=${LIGHTHOUSE_API_KEY}' >> .env
 					echo 'DEBUG_LEVEL=${DEBUG_LEVEL}' >> .env
 					echo 'WORKSPACE_PATH=${WORKSPACE_PATH}' >> .env
 					echo 'DB_URL=${DB_URL}' >> .env
-					echo 'DB_USR=${DB_USR}' >> .env
-					echo 'DB_PWD=${DB_PWD}' >> .env
 					echo 'DB_SCHEMA=${DB_SCHEMA}' >> .env
 					echo 'API_PREVIEW_URL=${API_PREVIEW_URL}' >> .env
 					echo 'CDN_DIST_URL=${CDN_DIST_URL}' >> .env
@@ -67,8 +64,6 @@ pipeline {
 					echo 'KEYCLOAK_SSL_REQUIRED=${KEYCLOAK_SSL_REQUIRED}' >> .env
 					echo 'KEYCLOAK_REALM=${KEYCLOAK_REALM}' >> .env
 					echo 'KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}' >> .env
-					echo 'KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}' >> .env
-					echo 'SMTP_PWD=${SMTP_PWD}' >> .env
 					echo 'SMTP_USR=${SMTP_USR}' >> .env
 					echo 'SMTP_TO=${SMTP_TO}' >> .env
 					echo 'SMTP_FROM=${SMTP_FROM}' >> .env
@@ -77,6 +72,14 @@ pipeline {
 					echo 'SMTP_PORT=${SMTP_PORT}' >> .env
 					echo 'SMTP_DEBUG=${SMTP_DEBUG}' >> .env
 				"""
+				// Security fix: See https://jenkins.io/redirect/groovy-string-interpolation
+				sh '''
+					echo "LIGHTHOUSE_API_KEY=${LIGHTHOUSE_API_KEY}" >> .env
+					echo "DB_USR=${DB_USR}" >> .env
+					echo "DB_PWD=${DB_PWD}" >> .env
+					echo "KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}" >> .env
+					echo "SMTP_PWD=${SMTP_PWD}" >> .env
+				'''
 			}
 		}
 		stage('Test') {
@@ -116,6 +119,6 @@ pipeline {
                     """
                 }
             }
-        }		
+        }
 	}
 }
