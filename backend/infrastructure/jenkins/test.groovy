@@ -74,11 +74,12 @@ pipeline {
 				"""
 				// Security fix: See https://jenkins.io/redirect/groovy-string-interpolation
 				sh '''
-					echo "LIGHTHOUSE_API_KEY=${LIGHTHOUSE_API_KEY}" >> .env
-					echo "DB_USR=${DB_USR}" >> .env
-					echo "DB_PWD=${DB_PWD}" >> .env
-					echo "KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}" >> .env
-					echo "SMTP_PWD=${SMTP_PWD}" >> .env
+					cd backend/infrastructure/docker
+					echo "LIGHTHOUSE_API_KEY=$LIGHTHOUSE_API_KEY" >> .env
+					echo "DB_USR=$DB_USR" >> .env
+					echo "DB_PWD=$DB_PWD" >> .env
+					echo "KEYCLOAK_CLIENT_SECRET=$KEYCLOAK_CLIENT_SECRET" >> .env
+					echo "SMTP_PWD=$SMTP_PWD" >> .env
 				'''
 			}
 		}
