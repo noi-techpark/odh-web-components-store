@@ -28,7 +28,7 @@ pipeline {
 		KEYCLOAK_URL = "https://auth.opendatahub.testingmachine.eu/auth/"
 		KEYCLOAK_SSL_REQUIRED = "none"
 		KEYCLOAK_REALM = "noi"
-		KEYCLOAK_CLIENT_ID = "odh-wcs"
+		KEYCLOAK_CLIENT_ID = "it.bz.opendatahub.webcomponents.api"
 		KEYCLOAK_CLIENT_SECRET = credentials('webcompstore-keycloak-client-secret-test')
 
 		// SMTP configuration
