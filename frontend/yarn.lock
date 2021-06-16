@@ -7895,9 +7895,10 @@ object.values@^1.1.0, object.values@^1.1.1:
     function-bind "^1.1.1"
     has "^1.0.3"
 
-"odh-web-components-configurator@https://github.com/noi-techpark/webcomp-configtool.git#v0.9.1":
+"odh-web-components-configurator@https://github.com/noi-techpark/webcomp-configtool.git#v0.9.2":
   version "0.1.0"
-  resolved "https://github.com/noi-techpark/webcomp-configtool.git#735d5dcd6044213644a72dc813ee6df92be80387"
+  uid a067a32c590c679eecf4b88f9d8c77bedde56359
+  resolved "https://github.com/noi-techpark/webcomp-configtool.git#a067a32c590c679eecf4b88f9d8c77bedde56359"
   dependencies:
     bootstrap "^4.3.1"
     bootstrap-vue "^2.0.0-rc.28"
@@ -10197,9 +10198,9 @@ sshpk@^1.7.0:
     tweetnacl "~0.14.0"
 
 ssri@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/ssri/-/ssri-6.0.1.tgz#2a3c41b28dd45b62b63676ecb74001265ae9edd8"
-  integrity sha512-3Wge10hNcT1Kur4PDFwEieXSCMCJs/7WvSACcrMYrNp+b8kDL1/0wJch5Ni2WrtwEa2IO8OsVfeKIciKCDx/QA==
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/ssri/-/ssri-6.0.2.tgz#157939134f20464e7301ddba3e90ffa8f7728ac5"
+  integrity sha512-cepbSq/neFK7xB6A50KHN0xHDotYzq58wWCa5LeWqnPrHG8GzfEjO/4O8kpmcGW+oaxkvhEJCWgbgNk4/ZV93Q==
   dependencies:
     figgy-pudding "^3.5.1"
 
